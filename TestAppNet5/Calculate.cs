@@ -28,7 +28,7 @@ namespace TestAppNet5
 
             var result = DeepDiff.DiffSingle(existing, calculated);
 
-            Logger.Information($"results?: {result != null}");
+            Logger.Information($"results?: {result.Entity != null}");
         }
 
         private static ActivationControl Generate(Date deliveryDate, ActivationControlStatus status, string internalComment, string tsoComment)
