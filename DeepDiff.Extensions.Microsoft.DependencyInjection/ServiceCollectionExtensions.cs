@@ -1,7 +1,5 @@
 using DeepDiff.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,29 +8,15 @@ namespace DeepDiff.Extensions.Microsoft.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddDeepDiff(this IServiceCollection services, params Assembly[] assembliesToScan)
+        public static IServiceCollection AddDeepDiff(this IServiceCollection services, IEnumerable<Assembly> assembliesToScan)
         {
             if (services.Any(sd => sd.ServiceType == typeof(IDeepDiff)))
                 return services;
 
-            var diffConfiguration = new DiffConfiguration();
-            diffConfiguration.AddProfiles(assembliesToScan);
+            var deepDiffConfiguration = new DeepDiffConfiguration();
+            deepDiffConfiguration.AddProfiles(assembliesToScan.ToArray());
 
-            var deepDiff = diffConfiguration.CreateDeepDiff();
-            services.AddSingleton(typeof(IDeepDiff), deepDiff);
-
-            return services;
-        }
-
-        public static IServiceCollection AddDeepDiff(this IServiceCollection services, IReadOnlyDictionary<Type, IEqualityComparer> typeSpecificComparers, params Assembly[] assembliesToScan)
-        {
-            if (services.Any(sd => sd.ServiceType == typeof(IDeepDiff)))
-                return services;
-
-            var diffConfiguration = new DiffConfiguration(typeSpecificComparers);
-            diffConfiguration.AddProfiles(assembliesToScan);
-
-            var deepDiff = diffConfiguration.CreateDeepDiff();
+            var deepDiff = deepDiffConfiguration.CreateDeepDiff();
             services.AddSingleton(typeof(IDeepDiff), deepDiff);
 
             return services;

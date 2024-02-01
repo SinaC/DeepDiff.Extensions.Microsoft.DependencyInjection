@@ -19,7 +19,7 @@ class Program
                     .CreateLogger();
 
         var serviceCollection = new ServiceCollection();
-        serviceCollection.AddDeepDiff(typeof(Program).Assembly);
+        serviceCollection.AddDeepDiff(new[] { typeof(Program).Assembly });
         serviceCollection.AddSingleton(logger);
 
         var containerBuilder = new ContainerBuilder();

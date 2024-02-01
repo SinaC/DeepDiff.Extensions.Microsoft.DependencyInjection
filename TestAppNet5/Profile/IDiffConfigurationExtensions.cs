@@ -5,19 +5,19 @@ namespace TestAppNet5.Profile
 {
     public static class IDiffConfigurationExtensions
     {
-        public static IDiffEntityConfiguration<TEntity> PersistEntity<TEntity>(this IDiffConfiguration diffConfiguration)
-        where TEntity : PersistEntity
+        public static IEntityConfiguration<TEntity> PersistEntity<TEntity>(this IDeepDiffConfiguration deepDiffConfiguration)
+            where TEntity : PersistEntity
         {
-            return diffConfiguration.Entity<TEntity>()
+            return deepDiffConfiguration.Entity<TEntity>()
                 .OnInsert(cfg => cfg.SetValue(x => x.PersistChange, PersistChange.Insert))
                 .OnUpdate(cfg => cfg.SetValue(x => x.PersistChange, PersistChange.Update))
                 .OnDelete(cfg => cfg.SetValue(x => x.PersistChange, PersistChange.Delete));
         }
 
-        public static IDiffEntityConfiguration<TEntity> PersistEntity<TEntity>(this IDiffEntityConfiguration<TEntity> diffEntityConfiguration)
+        public static IEntityConfiguration<TEntity> PersistEntity<TEntity>(this IEntityConfiguration<TEntity> entityConfiguration)
             where TEntity : PersistEntity
         {
-            return diffEntityConfiguration
+            return entityConfiguration
                 .OnInsert(cfg => cfg.SetValue(x => x.PersistChange, PersistChange.Insert))
                 .OnUpdate(cfg => cfg.SetValue(x => x.PersistChange, PersistChange.Update))
                 .OnDelete(cfg => cfg.SetValue(x => x.PersistChange, PersistChange.Delete));
